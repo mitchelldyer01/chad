@@ -14,6 +14,7 @@ An automated system that reviews GitHub pull requests with a focus on database p
 ## System Requirements
 
 ### Minimum Requirements (8GB RAM Systems)
+
 - Docker and Docker Compose
 - Git
 - 8GB RAM
@@ -21,6 +22,7 @@ An automated system that reviews GitHub pull requests with a focus on database p
 - MacOS (including M1/M2), Linux, or Windows with WSL2
 
 ### Recommended Models by System:
+
 | RAM Available | Recommended Model | Memory Usage |
 |--------------|------------------|---------------|
 | 8GB | TinyLlama (1.1B) or Phi-2 (2.7B) | 2-3GB |
@@ -29,17 +31,20 @@ An automated system that reviews GitHub pull requests with a focus on database p
 ## Quick Start
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/mitchelldyer01/chad
 cd chad
 ```
 
 2. Create environment file:
+
 ```bash
 cp .env.example .env
 ```
 
 3. Configure `.env` with your settings:
+
 ```env
 GITHUB_TOKEN=your_github_token
 REPO_PATH=/app/repos/your-repo
@@ -70,6 +75,7 @@ curl -L https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/resolve/ma
 5. Configure Docker resources in `docker-compose.yml`:
 
 For 8GB Systems:
+
 ```yaml
 services:
   pr-reviewer:
@@ -80,6 +86,7 @@ services:
 ```
 
 For 16GB Systems:
+
 ```yaml
 services:
   pr-reviewer:
@@ -90,6 +97,7 @@ services:
 ```
 
 6. Start the service:
+
 ```bash
 docker compose up --build
 ```
@@ -131,6 +139,7 @@ chad/
 ### Performance Tuning
 
 #### 8GB RAM Systems
+
 ```python
 llm = Llama(
     model_path=Config.MODEL_PATH,
@@ -141,6 +150,7 @@ llm = Llama(
 ```
 
 #### 16GB RAM Systems
+
 ```python
 llm = Llama(
     model_path=Config.MODEL_PATH,
@@ -149,7 +159,6 @@ llm = Llama(
     n_threads=4     # More threads
 )
 ```
-
 
 ## Metrics and Monitoring
 
@@ -181,6 +190,7 @@ Arrow keys: Navigate panels
 'h': Show help
 
 ## Database Schema
+
 The system uses SQLite with the following main tables:
 
 - processed_prs: Tracks processed pull requests
@@ -190,6 +200,7 @@ The system uses SQLite with the following main tables:
 - daily_metrics: Aggregated daily statistics
 
 ## Development Setup
+
 For local development without Docker:
 
 Create a virtual environment:

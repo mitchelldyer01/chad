@@ -8,8 +8,8 @@ from threading import Thread
 from llama_cpp import Llama
 
 from .config import Config
-from .utils.github import GitHubClient
-from .utils.database import DatabaseManager
+from .github import GitHubClient
+from .database import DatabaseManager
 
 # Configure logging
 logging.basicConfig(

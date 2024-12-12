@@ -33,8 +33,10 @@ class GitHubClient:
         data = {'body': comment}
         
         try:
-            response = requests.post(url, headers=self.headers, json=data)
-            response.raise_for_status()
+            print(url)
+            print(data)
+            # response = requests.post(url, headers=self.headers, json=data)
+            # response.raise_for_status()
             return True
         except requests.exceptions.RequestException as e:
             logger.error(f"Failed to submit review comment: {e}")
