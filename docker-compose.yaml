@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  pr-reviewer:
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+    build: .
+    volumes:
+      - .:/app
+      - ~/.gitconfig:/root/.gitconfig:ro  # Share git config
+      - ./models:/app/models  # Persist models
+      - ./data:/app/data # Persist SQLITE data
+    environment:
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - REPO_PATH=${REPO_PATH}
+      - REPO_OWNER=${REPO_OWNER}
+      - REPO_NAME=${REPO_NAME}
+      - MODEL_PATH=${MODEL_PATH}
+    restart: unless-stopped
+
