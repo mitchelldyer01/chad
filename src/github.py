@@ -16,6 +16,7 @@ class GitHubClient:
 
     def get_pull_requests(self, state: str = "open") -> List[Dict]:
         """Fetch pull requests from GitHub."""
+        logger.info("Fetching PRs from GitHub")
         url = f"{self.base_url}/repos/{self.owner}/{self.repo}/pulls"
         params = {'state': state}
         
@@ -29,12 +30,13 @@ class GitHubClient:
 
     def submit_review_comment(self, pr_number: int, comment: str) -> bool:
         """Submit a review comment on a pull request."""
+        logger.info("Submitting review on PR")
         url = f"{self.base_url}/repos/{self.owner}/{self.repo}/issues/{pr_number}/comments"
         data = {'body': comment}
         
         try:
-            print(url)
-            print(data)
+            logger.info(url)
+            logger.info(data)
             # response = requests.post(url, headers=self.headers, json=data)
             # response.raise_for_status()
             return True
@@ -44,6 +46,7 @@ class GitHubClient:
 
     def get_pr_files(self, pr_number: int) -> List[Dict]:
         """Get list of files changed in a pull request."""
+        logger.info("Get list of changed files in a PR")
         url = f"{self.base_url}/repos/{self.owner}/{self.repo}/pulls/{pr_number}/files"
         
         try:

@@ -36,6 +36,7 @@ class PRReviewer:
         # Initialize the model
         self.llm = Llama(
             model_path=Config.MODEL_PATH,
+            verbose=False,
             n_ctx=2048,
             n_batch=4,
             n_threads=2
@@ -49,6 +50,7 @@ class PRReviewer:
 
     def get_pr_diff(self, pr_number: int) -> Optional[str]:
         """Get only the modified lines from a diff for a specific PR."""
+        logger.info("Getting PR Diff")
         try:
             self.repo.git.checkout('master')
 
@@ -74,6 +76,7 @@ class PRReviewer:
 
     def process_diff_content(self, diff: str) -> str:
         """Process the diff to extract relevant changed lines with minimal context."""
+        logger.info("Processing diff content")
         processed_chunks = []
         current_file = None
         
@@ -147,6 +150,7 @@ class PRReviewer:
 
     def analyze_diff(self, diff: str) -> str:
         """Analyze the diff using the LLM."""
+        logger.info("Analyzing Diff")
 
         start_time = time.time()
         all_analyses = []
@@ -192,6 +196,7 @@ class PRReviewer:
 
     def analyze_single_chunk(self, chunk: str) -> Optional[str]:
         """Analyze a single chunk of diff that fits in context window."""
+        logger.info("Analyzing Chunk")
         prompt = f"""As a senior developer specializing in database performance, review this section of a pull request:
 
         {chunk}
@@ -220,6 +225,7 @@ class PRReviewer:
 
     def analyze_large_chunk(self, chunk: str) -> List[str]:
         """Break down large chunks into smaller pieces."""
+        logger.info("Analyzing Large Chunk")
         analyses = []
     
         # Split by change blocks (@@@ Changes @@@)
@@ -255,6 +261,8 @@ class PRReviewer:
 
     def combine_analyses(self, analyses: List[str]) -> str:
         """Combine individual analyses into a coherent review."""
+        logger.info("Combine Analyses")
+
         if not analyses:
             return "No significant database-related issues found in the changes."
     
@@ -287,6 +295,8 @@ class PRReviewer:
 
     def process_pull_request(self, pr: dict):
         """Process a single pull request."""
+        logger.info("Process PR")
+
         try:
             pr_number = pr['number']
             self.current_pr_number = pr_number
@@ -325,6 +335,7 @@ class PRReviewer:
 
     def check_new_prs(self):
         """Check for new PRs and add them to the queue."""
+        logger.info("Check for new PRs")
         prs = self.github.get_pull_requests()
         for pr in prs:
             if not self.db.is_pr_processed(pr['number']):
@@ -333,6 +344,8 @@ class PRReviewer:
 
     def process_queue(self):
         """Process PRs from the queue."""
+        logger.info("Process PRs from queue")
+
         while True:
             try:
                 pr = self.pr_queue.get(timeout=1)
