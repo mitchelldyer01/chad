@@ -12,11 +12,15 @@ services:
       - ~/.gitconfig:/root/.gitconfig:ro  # Share git config
       - ./models:/app/models  # Persist models
       - ./data:/app/data # Persist SQLITE data
+      - ${HOME}/src/github.com/phil-inc/capi:/root/src/github.com/phil-inc/capi # Repository is on my local
+      - ${HOME}/.ssh/id_ed25519_github_automation:/root/.ssh/id_ed25519:ro
+      - ${HOME}/.ssh/id_ed25519_github_automation.pub:/root/.ssh/id_ed25519.pub:ro
     environment:
-      - GITHUB_TOKEN=${GITHUB_TOKEN}
-      - REPO_PATH=${REPO_PATH}
-      - REPO_OWNER=${REPO_OWNER}
-      - REPO_NAME=${REPO_NAME}
-      - MODEL_PATH=${MODEL_PATH}
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
+      REPO_PATH: ${REPO_PATH}
+      REPO_OWNER: ${REPO_OWNER}
+      REPO_NAME: ${REPO_NAME}
+      MODEL_PATH: ${MODEL_PATH}
+      GIT_SSH_COMMAND: "ssh -v"
     restart: unless-stopped
 
